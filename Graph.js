@@ -5,14 +5,15 @@ class Graph {
 
   addVertex(vertex) {
     if (this.adjacencyList[vertex]) {
-      return new Error("Vertex with same name already exists");
+      return new Error("Vertex with same identifier already exists");
     }
+
     this.adjacencyList[vertex] = [];
   }
 
   addEdge(vertex1, vertex2) {
     if (!this.adjacencyList[vertex1] || !this.adjacencyList[vertex2]) {
-      return new Error("Vertex doesn't exist");
+      return new Error("Invalid Vertex");
     }
 
     this.adjacencyList[vertex1].push(vertex2);
@@ -20,24 +21,35 @@ class Graph {
   }
 
   removeEdge(vertex1, vertex2) {
-    if (!this.adjacencyList[vertex1] || !this.adjacencyList[vertex2]) {
-      console.log("error 1");
-      return new Error("Vertex doesn't exist");
+    if (
+      !this.adjacencyList[vertex1].includes(vertex2) ||
+      !this.adjacencyList[vertex2].includes(vertex1)
+    ) {
+      return new Error("Invalid Vertex");
     }
 
     this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter(
-      (v) => v !== vertex2
+      (vertex) => {
+        return vertex !== vertex2;
+      }
     );
+
     this.adjacencyList[vertex2] = this.adjacencyList[vertex2].filter(
-      (v) => v !== vertex1
+      (vertex) => {
+        return vertex !== vertex1;
+      }
     );
   }
 
   removeVertex(vertex) {
-    while (this.adjacencyList[vertex].length) {
-      const adjacentVertex = this.adjacencyList[vertex].pop();
-      this.removeEdge(vertex, adjacentVertex);
+    if (!this.adjacencyList[vertex]) {
+      return new Error("Invalid Vertex");
     }
+
+    [...this.adjacencyList[vertex]].forEach((adjacenctVertex) => {
+      this.removeEdge(vertex, adjacenctVertex);
+    });
+
     delete this.adjacencyList[vertex];
   }
 }

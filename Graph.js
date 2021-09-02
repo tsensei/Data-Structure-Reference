@@ -20,11 +20,6 @@ class Graph {
   }
 
   removeEdge(vertex1, vertex2) {
-    if (!this.adjacencyList[vertex1] || !this.adjacencyList[vertex2]) {
-      console.log("error 1");
-      return new Error("Vertex doesn't exist");
-    }
-
     this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter(
       (v) => v !== vertex2
     );
